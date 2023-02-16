@@ -10,7 +10,7 @@ require_once "includes/header.php";
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="assets/style.css" rel="stylesheet" type="text/css">
-    <script type="module" src="./js/main.js" defer></script>
+    <script src="./js/main.js" defer></script>
     <title>Livre d'or</title>
 </head>
 <body>
@@ -21,4 +21,3 @@ require_once "includes/header.php";
 </body>
 </html>
 
-<?php
