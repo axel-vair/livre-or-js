@@ -14,9 +14,11 @@ require_once "includes/header.php";
     <title>Livre d'or</title>
 </head>
 <body>
+<div>
+    <div id="forms"></div>
 
-    <div id="inscription"></div>
-    <div id="connection"></div>
+</div>
+<span id="registerSuccess"></span>
 
 </body>
 </html>

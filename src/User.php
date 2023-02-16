@@ -39,9 +39,10 @@
         ));
 
         if($sql_insert){
-            echo "inscription réussie";
+            // json qui va permettre de vérifier que la réponse est OK, si c'est le cas, on affiche inscription réussie
+            echo json_encode(['response' => "ok", 'reussite' => 'inscription réussie' ]);
         }else{
-            echo "inscription a échoué";
+            echo json_encode(['response' => "not ok", 'echoue' => 'l\'inscription a échoué']);
         }
 
     }
@@ -50,13 +51,19 @@
     {
         $this->login = $login;
         $this->password = $password;
-        var_dump($password);
         $sql_verify = "SELECT * FROM utilisateurs WHERE login = :login AND password = :password";
         $sql_verify_exe = $this->db->prepare($sql_verify);
-        $sql_verify_exe->bindParam(':login', $login);
-        $sql_verify_exe->bindParam(':password', $password);
-        $sql_verify_exe->execute();
-        return $results = $sql_verify_exe->fetchAll(PDO::FETCH_ASSOC);
+        $sql_verify_exe->execute(array(
+            'login' => $this->login,
+            'password' => $this->password,
+        ));
+        $results = $sql_verify_exe->fetchAll(PDO::FETCH_ASSOC);
+
+        if($results){
+            return json_encode(['reponse' => "ok", 'reussite' => 'connexion réussie']);
+        }else{
+            return json_encode(['reponse' => 'not ok', 'echoue' => 'l\'inscription a échoué']);
+        }
 
 
 
