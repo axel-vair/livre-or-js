@@ -3,7 +3,6 @@ require_once 'src/User.php';
 if(isset($_POST) && !empty($_POST['login']) && !empty($_POST['password'])){
     $login = htmlspecialchars($_POST['login']);
     $password = $_POST['password'];
-
     $new_user = new User();
     $new_user->register($login, $password);
     die(); // permet que le code s'arrête avant d'afficher le formulaire pour éviter de poser problème avec le json

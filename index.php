@@ -15,9 +15,11 @@ require_once "includes/header.php";
 </head>
 <body>
 <div>
+    <!-- Div qui vont accueillir les formulaires d'inscription et de connexion -->
     <div id="forms"></div>
 
 </div>
+<!-- Span qui accueille les messages d'échecs et de réussites JS -->
 <span id="registerSuccess"></span>
 
 </body>

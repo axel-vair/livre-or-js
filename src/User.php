@@ -34,8 +34,8 @@
         $sql = "INSERT INTO utilisateurs (login, password) VALUES (:login, :password)";
         $sql_insert = $this->db->prepare($sql);
         $sql_insert->execute(array(
-            'login' => $this->login,
-            'password' => $this->password,
+            'login' => htmlspecialchars($login),
+            'password' => password_hash($password, PASSWORD_BCRYPT),
         ));
 
         if($sql_insert){
@@ -49,23 +49,31 @@
 
     public function connection($login, $password)
     {
+        // On récupère les infos de l'objet courant et on stocke dans des variables
         $this->login = $login;
         $this->password = $password;
-        $sql_verify = "SELECT * FROM utilisateurs WHERE login = :login AND password = :password";
+
+        // query qui vient selectionner les infos là où le login et le mdp correspondent avec l'objet courant
+        $sql_verify = "SELECT * FROM utilisateurs WHERE login = :login";
         $sql_verify_exe = $this->db->prepare($sql_verify);
         $sql_verify_exe->execute(array(
-            'login' => $this->login,
-            'password' => $this->password,
+            'login' => $login,
         ));
-        $results = $sql_verify_exe->fetchAll(PDO::FETCH_ASSOC);
+        // fetch du résultat dans un tableau
+        $results = $sql_verify_exe->fetch(PDO::FETCH_ASSOC);
 
-        if($results){
-            return json_encode(['reponse' => "ok", 'reussite' => 'connexion réussie']);
-        }else{
-            return json_encode(['reponse' => 'not ok', 'echoue' => 'l\'inscription a échoué']);
+        // si le resultat est true alors on stocke le password hashé dans un variable
+        if ($results) {
+            $hashedPassword = $results['password'];
+            //si le passwordverify est true alors on initialise une session avec le login
+            // puis on echo le json pour afficher un message avec js
+            if (password_verify($password, $hashedPassword)) {
+                $_SESSION['login'] = $login;
+                return json_encode(['reponse' => "ok", 'reussite' => 'connexion réussie']);
+            }
+        } else {
+            return json_encode(['reponse' => 'not ok', 'echoue' => 'la connexion a échoué']);
         }
-
-
 
 
     }
