@@ -28,9 +28,6 @@
 
     public function register($login, $password)
     {
-        $this->login = $login;
-        $this->password = $password;
-
         $sql = "INSERT INTO utilisateurs (login, password) VALUES (:login, :password)";
         $sql_insert = $this->db->prepare($sql);
         $sql_insert->execute(array(
@@ -68,14 +65,22 @@
             //si le passwordverify est true alors on initialise une session avec le login
             // puis on echo le json pour afficher un message avec js
             if (password_verify($password, $hashedPassword)) {
+                session_start();
                 $_SESSION['login'] = $login;
                 return json_encode(['reponse' => "ok", 'reussite' => 'connexion réussie']);
+
             }
         } else {
             return json_encode(['reponse' => 'not ok', 'echoue' => 'la connexion a échoué']);
         }
 
 
+    }
+    public function deconnect(){
+        unset($_SESSION['login']);
+        session_destroy();
+        echo "vous êtes déco";
+        header('Location: index.php');
     }
 
 }

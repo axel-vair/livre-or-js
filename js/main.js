@@ -21,7 +21,8 @@ btnRegister.addEventListener('click', async () => {
     let form = document.querySelector('#form-register')
     form.addEventListener('submit', (e) => {
         e.preventDefault(); //Prévention du caractère par défaut du bouton. On écoute le bouton avec e
-        const myRegisterForm = new FormData(form); // Nouvel objet FormData pour récupérer les valeurs du formulaire
+        const myRegisterForm = new FormData(form);
+        myRegisterForm.append('id', 'form-register')// Nouvel objet FormData pour récupérer les valeurs du formulaire
         fetch('inscription.php', {
             method: "POST", // Envoie des valeurs
             body: myRegisterForm
@@ -48,6 +49,35 @@ btnRegister.addEventListener('click', async () => {
 
 })
 
+const displayNav = async () => {
+    // console.log(text);
+
+    let response = await fetch('./includes/header.php?textOnly');
+    let headerHTML = await response.text();
+
+    // Option #1
+    const headerEl = document.querySelector('header');
+    headerEl.innerHTML = headerHTML;
+
+    console.log(headerHTML);
+
+    // fetch ('header.php')
+    //     .then((response) => {
+    //         return content;
+    //
+    //     })
+    //     .then ((content) => {
+    //         const nav = document.querySelector('.nav');
+    //         nav.innerHTML = content;
+    //
+    //     })
+};
+
+const removeBodyContent = () => {
+    let bodyContent = document.querySelector('body > div');
+    bodyContent.innerHTML = "";
+};
+
 btnConnection.addEventListener('click', async() => {
     await fetch('connexion.php')
         .then((response) => {
@@ -66,21 +96,31 @@ btnConnection.addEventListener('click', async() => {
                 })
                     .then((response_connect) => {
                         if((response_connect.ok)){
+                            // displayNav('I love you');
                             return response_connect.json();
                         }
                     })
                     .then((contentResponse_connect) => {
-                        console.log(contentResponse_connect)
 
                         if(contentResponse_connect['reponse'] === "ok"){
                             document.getElementById('registerSuccess').innerHTML = contentResponse_connect['reussite'];
                             spanMessage.innerText = contentResponse_connect['reussite'];
 
+                            // Option #2
+                            let headerEl = document.querySelector('header');
+                            headerEl.setAttribute('connected', '');
+
+                            displayNav();
+                            removeBodyContent();
+
                         }else{
                             document.getElementById('registerSuccess').innerHTML = contentResponse_connect['echoue']
                             spanMessage.innerText = contentResponse_connect['echoue'];
                         }
+
+
                     })
+
         })
 
 

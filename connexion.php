@@ -4,13 +4,11 @@ require_once 'src/User.php';
 /* Si le formulaire est envoyé, que les inputs ne sont pas vides alors on stocke les inputs dans des variables
     puis on instancie un objet de la classe user et l'on appelle la fonction connection */
 
-if (isset($_POST) && !empty($_POST['login']) && !empty($_POST['password'])) {
+if (isset($_POST['login']) && isset($_POST['password']) && !empty($_POST['login']) && !empty($_POST['password'])) {
     $login = htmlspecialchars($_POST['login']);
     $password = htmlspecialchars($_POST['password']);
-
     $new_connection = new User();
     echo $new_connection->connection($login, $password);
-
     // die pour éviter que le json ne soit corrompu par le html
     die();
 }
