@@ -6,9 +6,9 @@
     private PDO $db;
 
     function __construct(){
-        $db_dsn = 'mysql:host=localhost; dbname=livreor-js';
-        $username = 'root';
-        $password_db = 'root';
+        $db_dsn = 'mysql:host=localhost; dbname=livrejs';
+        $username = 'livrejs';
+        $password_db = '3mGbb0&58';
 
         try {
             $options =
